@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "node server.js",
+    "start": "node startup.js",
     "eslint": "eslint ./**/*.js ./**/*.jsx",
     "build": "babel ./ --out-dir lib --ignore ./node_modules"
   },
