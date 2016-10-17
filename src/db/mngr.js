@@ -21,26 +21,20 @@ function getDashboard(callback) {
       attributes: ['answers', 'QuizId'],
       where: {
         answers: {
-          $ne: ''
-        }
+          $ne: '',
+        },
       },
       include: [{
         model: model.Quiz,
-        attributes:['question'],
+        attributes: ['question'],
       }],
-    }]
+    }],
   }).then((dashboard) => {
     callback(dashboard);
   });
 }
 
 function getQuiz(userId, callback) {
-  const quiz = {
-    id: 0,
-    question: '',
-    answers: []
-  };
-
   model.QuizStorage.findAll({
     order: [
       model.Sequelize.fn('RAND'),
@@ -56,8 +50,8 @@ function getQuiz(userId, callback) {
       include: [{
         model: model.Answer,
         attributes: ['id', 'answer'],
-      }]
-    }]
+      }],
+    }],
   }).then((q) => {
     if (!q) {
       callback(null);
@@ -88,6 +82,7 @@ function insertQuiz(data) {
           UserId: user.get('id'),
           QuizId: q.get('id'),
         });
+        return user;
       });
     });
   });
@@ -96,12 +91,12 @@ function insertQuiz(data) {
 function saveQuizAnswer(quiz) {
   model.QuizStorage.update(
     {
-      answers: JSON.stringify(quiz.answers)
+      answers: JSON.stringify(quiz.answers),
     },
     {
       where: {
-        id: quiz.id
-      }
+        id: quiz.id,
+      },
     });
 }
 

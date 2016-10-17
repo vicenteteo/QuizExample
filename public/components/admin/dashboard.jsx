@@ -1,22 +1,18 @@
 class Dashboard extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   componentDidMount() {
     setTimeout(this.getDashboard.bind(this), 1000);
   }
-  getDashboard(){
-    debugger;
+  getDashboard() {
     $.get('./getdashboard', null, (result) => {
-      debugger;
+      console.debug(JSON.stringify(result));
     }, 'json');
   }
   render() {
     return (
-      <div className='col-xs-12' >
-      ddddd
-            </div>
-      
+      <div className='col-xs-12' >ddddd</div>
     );
   }
 }
+
+Dashboard.propTypes = {
+};

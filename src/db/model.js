@@ -22,17 +22,17 @@ function initDBModel() {
   user = sequelize.define('User', {
     username: Sequelize.STRING,
     password: Sequelize.STRING,
-    type:{
-     type: Sequelize.STRING,
-     defaultValue: 'anonymous',    
+    type: {
+      type: Sequelize.STRING,
+      defaultValue: 'anonymous',
     },
   });
-  
+
   quizStorage = sequelize.define('QuizStorage', {
-    answers: { 
+    answers: {
       type: Sequelize.STRING,
       defaultValue: '',
-    }
+    },
   });
 
   quiz = sequelize.define('Quiz', {
@@ -55,21 +55,21 @@ function initDBModel() {
   exp.QuizStorage = quizStorage;
 
   sequelize.authenticate().then(() => {
-    sequelize.sync({ force: false}).then(() => {
+    sequelize.sync({ force: false }).then(() => {
       user.create({
         username: 'guest1',
         password: 'guest',
-        type:'registered',
+        type: 'registered',
       });
       user.create({
         username: 'guest2',
         password: 'guest',
-        type:'registered',
+        type: 'registered',
       });
       user.create({
         username: 'admin',
         password: 'admin',
-        type: 'admin'
+        type: 'admin',
       });
     }, (err) => {
       console.log('Fail to sync database model', err);

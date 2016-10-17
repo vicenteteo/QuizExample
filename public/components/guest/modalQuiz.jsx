@@ -3,11 +3,11 @@ class ModalQuiz extends React.Component {
     super(props);
     this.props = {
       pauseQuiz: true,
-    }
+    };
     this.state = {
       question: '',
       answers: [],
-    }
+    };
     this.setState(this.state);
   }
   componentDidMount() {
@@ -25,7 +25,6 @@ class ModalQuiz extends React.Component {
     }
     $.get('./getquiz', null, (result) => {
       if (result.status === 0 && result.data) {
-
         if (this.getQuizInterval) {
           clearInterval(this.getQuizInterval);
           this.getQuizInterval = null;
@@ -33,9 +32,9 @@ class ModalQuiz extends React.Component {
 
         this.state.question = result.data.Quiz.question;
         this.state.answers = result.data.Quiz.Answers;
-        this.state.answers.map((item, index) => {
-          item.checked = '';
-        });
+        for (let i = 0; i < this.state.answers.length; i++) {
+          this.state.answers[i].checked = '';
+        }
         this.state.currentQuizStorageId = result.data.id;
         this.setState(this.state, () => $('#quizModal').modal());
       }
@@ -44,27 +43,30 @@ class ModalQuiz extends React.Component {
   send() {
     const quiz = {
       answers: [],
-      id: this.state.currentQuizStorageId
+      id: this.state.currentQuizStorageId,
     };
-    $(".funkyradio-primary input").map((index, item) => {
-      if (item.checked)
-        quiz.answers.push(parseInt($(item).attr('id')));
+    $('.funkyradio-primary input').map((index, item) => {
+      if (item.checked) {
+        quiz.answers.push(parseInt($(item).attr('id'), 10));
+      }
+      return item;
     });
 
     $('#quizAnswers').hide();
 
-    $.get('./sendquiz', quiz, (result) => {
+    $.get('./sendquiz', quiz, () => {
       this.close();
     });
   }
   close() {
     $('#quizAnswers').show();
     $('#quizModal').modal('hide');
-    if (!this.getQuizInterval)
+    if (!this.getQuizInterval) {
       this.getQuizInterval = setInterval(this.getQuiz.bind(this), 10000);
+    }
   }
   onChecked(evt) {
-    const index = parseInt($(evt.target).attr('data-index'));
+    const index = parseInt($(evt.target).attr('data-index'), 10);
     if (index >= 0) {
       this.state.answers[index].checked = (this.state.answers[index].checked === '' ? 'checked' : '');
       this.setState(this.state);
@@ -79,20 +81,23 @@ class ModalQuiz extends React.Component {
             <h3 style={{ display: 'inline', margin: '15px' }}>{this.state.question}</h3>
           </div>
           <div className='modal-body'>
-            <div className="funkyradio" id='quizAnswers'>
+            <div className='funkyradio' id='quizAnswers'>
               {
                 this.state.answers.map((item, index) => {
-                  return <div className="funkyradio-primary">
-                    <input type="checkbox" name="checkbox" id={item.id} data-index={index} checked={item.checked} onChange={(evt) => this.onChecked(evt) }/>
-                    <label htmlFor={item.id}>{item.answer}</label>
-                  </div>
+                  const els = (
+                    <div className='funkyradio-primary'>
+                      <input type='checkbox' name='checkbox' id={item.id} data-index={index} checked={item.checked} onChange={(evt) => this.onChecked(evt)} />
+                      <label htmlFor={item.id}>{item.answer}</label>
+                    </div>
+                  );
+                  return els;
                 })
               }
             </div>
           </div>
           <div className='modal-footer text-muted'>
-            <button type='button' className='btn btn-default' onClick={ () => { this.close(); } } >Close</button>
-            <button type='button' className='btn btn-primary' onClick={ () => { this.send(); } }>Send</button>
+            <button type='button' className='btn btn-default' onClick={() => { this.close(); }} >Close</button>
+            <button type='button' className='btn btn-primary' onClick={() => { this.send(); }}>Send</button>
           </div>
         </div>
       </div>

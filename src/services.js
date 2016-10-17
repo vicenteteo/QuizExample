@@ -21,8 +21,7 @@ function authenticate(req, res, next) {
     if (!user) {
       result.status = -1;
       result.message = 'Invalid credentials';
-    }
-    else {
+    } else {
       req.session.userType = user.get('type') || 'anonymous';
       req.session.userId = user.id;
     }
@@ -42,7 +41,7 @@ function createQuiz(req, res, next) {
   dbMngr.insertQuiz(req.query);
   next();
 }
-function sendQuiz(req, res, next){
+function sendQuiz(req, res, next) {
   console.log(JSON.stringify(req.query));
   dbMngr.saveQuizAnswer(req.query);
   next();
@@ -63,7 +62,7 @@ function getQuiz(req, res, next) {
 }
 
 function checkUser(req, res, next) {
-  result.data = { type: req.session.userType || 'anonymous'};
+  result.data = { type: req.session.userType || 'anonymous' };
   next();
 }
 

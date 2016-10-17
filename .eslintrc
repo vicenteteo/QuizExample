@@ -6,8 +6,28 @@
         "airbnb",
         "standard-react"
     ],
-    "rules":{
-        "react/react-in-jsx-scope": 0
+    "rules": {
+        "no-console": 0,
+        "react/react-in-jsx-scope": 0,
+        "max-len": [
+            2,
+            {
+                "code": 200
+            }
+        ]
+    },
+    "env":{
+       "jquery": true,
+       "browser": true,
+       "node": true 
+    },
+    "globals":{
+        "React": true,
+        "ReactDOM": true,
+        "SignInButton": true,
+        "SignInDialog": true,
+        "Dashboard": true,
+        "QuizEditor": true,
+        "ModalQuiz": true
     }
-    
 }

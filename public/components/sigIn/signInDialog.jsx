@@ -8,7 +8,7 @@ class SignInDialog extends React.Component {
     };
     this.state = {
       user: '',
-      password: ''
+      password: '',
     };
   }
   componentWillUpdate(nextProp) {
@@ -17,7 +17,7 @@ class SignInDialog extends React.Component {
     }
   }
   componentDidMount() {
-    $("#loginModal").on('shown.bs.modal', () => this.props.onShow());
+    $('#loginModal').on('shown.bs.modal', () => this.props.onShow());
   }
   signIn() {
     $.post('./authenticate', this.state, () => { this.signInResult(); }, 'json');
@@ -50,14 +50,14 @@ class SignInDialog extends React.Component {
               <h4 className='modal-title'>Sign In</h4>
             </div>
             <div className='modal-body'>
-            <span class="label label-default">User:</span>
-              <input type='text' ref='inputUser' className='form-control' value={this.state.user} onChange={(ev) => this.handleUserChange(ev) }/>
-              <span class="label label-default">Password:</span>
-              <input type='password' ref='inputPassword' className='form-control' value={this.state.password} onChange={(ev) => this.handlerPasswordChange(ev) }/>
+              <span className='label label-default'>User:</span>
+              <input type='text' ref='inputUser' className='form-control' value={this.state.user} onChange={(ev) => this.handleUserChange(ev)} />
+              <span className='label label-default'>Password:</span>
+              <input type='password' ref='inputPassword' className='form-control' value={this.state.password} onChange={(ev) => this.handlerPasswordChange(ev)} />
             </div>
             <div className='modal-footer'>
-              <button className='btn btn-primary' onClick={() => this.signIn() }>Sign in</button>
-              <button type='button' className='btn btn-default' data-dismiss='modal' onClick={() => this.props.onClose && this.props.onClose() }>Close</button>
+              <button className='btn btn-primary' onClick={() => this.signIn()}>Sign in</button>
+              <button type='button' className='btn btn-default' data-dismiss='modal' onClick={() => this.props.onClose && this.props.onClose()}>Close</button>
             </div>
           </div>
         </div>
