@@ -11,7 +11,7 @@ function init(callback) {
 }
 
 function index(req, res, next) {
-  res.sendfile('index.html', { root: 'public' });
+  res.sendFile('index.html', { root: 'public' });
   next();
 }
 

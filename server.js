@@ -43,7 +43,7 @@ function startup() {
   app.get('/getdashboard', services.getDashboard);
   app.use(services.beforeRender);
 
-  console.log('Listening host: localhost port: 8081');
+  console.log('Listening host: localhost port: 8085');
 }
 
 services.init((err) => {
@@ -51,5 +51,5 @@ services.init((err) => {
     return;
   }
 
-  app.listen(8081, startup);
+  app.listen(8085, startup);
 });
