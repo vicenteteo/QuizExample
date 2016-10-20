@@ -41,6 +41,7 @@ function startup() {
   app.get('/getquiz', services.getQuiz);
   app.get('/sendquiz', services.sendQuiz);
   app.get('/getdashboard', services.getDashboard);
+  app.get('/getusers', services.getUsers);
   app.use(services.beforeRender);
 
   console.log('Listening host: localhost port: 8085');

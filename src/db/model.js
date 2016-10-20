@@ -55,7 +55,7 @@ function initDBModel() {
   exp.QuizStorage = quizStorage;
 
   sequelize.authenticate().then(() => {
-    sequelize.sync({ force: false }).then(() => {
+    sequelize.sync({ force: true }).then(() => {
       user.create({
         username: 'guest1',
         password: 'guest',

@@ -50,9 +50,9 @@ class SignInDialog extends React.Component {
               <h4 className='modal-title'>Sign In</h4>
             </div>
             <div className='modal-body'>
-              <span className='label label-default'>User:</span>
+              <span>User:</span>
               <input type='text' ref='inputUser' className='form-control' value={this.state.user} onChange={(ev) => this.handleUserChange(ev)} />
-              <span className='label label-default'>Password:</span>
+              <span>Password:</span>
               <input type='password' ref='inputPassword' className='form-control' value={this.state.password} onChange={(ev) => this.handlerPasswordChange(ev)} />
             </div>
             <div className='modal-footer'>

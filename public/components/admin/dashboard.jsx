@@ -1,6 +1,9 @@
 class Dashboard extends React.Component {
   componentDidMount() {
     setTimeout(this.getDashboard.bind(this), 1000);
+    $('.autoSearchBox').typeahead({
+        source: ['Vicente','Elvis'], 
+    });
   }
   getDashboard() {
     $.get('./getdashboard', null, (result) => {
@@ -9,7 +12,9 @@ class Dashboard extends React.Component {
   }
   render() {
     return (
-      <div className='col-xs-12' >ddddd</div>
+      <div className='col-xs-12' >
+        <input type='text' id='autoSearchBox' />
+      </div>
     );
   }
 }

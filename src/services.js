@@ -15,6 +15,14 @@ function index(req, res, next) {
   next();
 }
 
+function getUsers(req, res, next){
+  dbMngr.getUsers((users) => {
+    result.data = JSON.stringify(users);
+    next(); 
+  });
+}
+
+
 /* eslint-disable no-param-reassign*/
 function authenticate(req, res, next) {
   dbMngr.getUser(req.body.user, req.body.password, (user) => {
@@ -54,6 +62,7 @@ function getDashboard(req, res, next) {
   });
 }
 
+
 function getQuiz(req, res, next) {
   dbMngr.getQuiz(req.session.userId, (quiz) => {
     result.data = quiz;
@@ -75,7 +84,7 @@ function checkAuthentication(req, res, next) {
 }
 
 function beforeRender(req, res, next) {
-  if (!req.url.match('authenticate|checkuser|signout|createquiz|getquiz|sendquiz|getdashboard')) {
+  if (!req.url.match('authenticate|checkuser|signout|createquiz|getquiz|sendquiz|getdashboard|getusers')) {
     next();
     return;
   }
@@ -104,3 +113,4 @@ exp.checkQuestions = checkQuestions;
 exp.getQuiz = getQuiz;
 exp.sendQuiz = sendQuiz;
 exp.getDashboard = getDashboard;
+exp.getUsers = getUsers;

@@ -13,6 +13,20 @@ function getUser(name, pass, callback) {
   }).then(callback);
 }
 
+function getUsers(callback) {
+  const users = [];
+  model.User.findAll({
+    attributes: ['id', 'username'],
+  }).then((u) => {
+    for(let i = 0; i < u.length; i++){
+      if(u[i].username !== 'admin'){
+          users.push(u[i]);
+      } 
+    }
+    callback(users); 
+  });
+}
+
 function getDashboard(callback) {
   model.User.findAll({
     attributes: ['id', 'username'],
@@ -106,3 +120,5 @@ exp.insertQuiz = insertQuiz;
 exp.getQuiz = getQuiz;
 exp.saveQuizAnswer = saveQuizAnswer;
 exp.getDashboard = getDashboard;
+exp.getUsers = getUsers;
+
