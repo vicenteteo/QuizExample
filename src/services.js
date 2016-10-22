@@ -15,10 +15,10 @@ function index(req, res, next) {
   next();
 }
 
-function getUsers(req, res, next){
+function getUsers(req, res, next) {
   dbMngr.getUsers((users) => {
     result.data = JSON.stringify(users);
-    next(); 
+    next();
   });
 }
 

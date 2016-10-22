@@ -28,6 +28,7 @@
         "SignInDialog": true,
         "Dashboard": true,
         "QuizEditor": true,
-        "ModalQuiz": true
+        "ModalQuiz": true,
+        "Chart": true
     }
 }
