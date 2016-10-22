@@ -18,12 +18,12 @@ function getUsers(callback) {
   model.User.findAll({
     attributes: ['id', 'username'],
   }).then((u) => {
-    for(let i = 0; i < u.length; i++){
-      if(u[i].username !== 'admin'){
-          users.push(u[i]);
-      } 
+    for (let i = 0; i < u.length; i++) {
+      if (u[i].username !== 'admin') {
+        users.push(u[i]);
+      }
     }
-    callback(users); 
+    callback(users);
   });
 }
 
