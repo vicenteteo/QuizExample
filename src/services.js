@@ -79,15 +79,15 @@ function checkUser(req, res, next) {
 function getQuestions(req, res, next) {
   dbMngr.getQuestions((questions) => {
     result.data = questions;
-    next(); 
-  }); 
+    next();
+  });
 }
 
 function getQuizStatistics(req, res, next) {
   dbMngr.getQuizStatistics(req.query.quizId, (r) => {
     result.data = r;
-    next(); 
-  }); 
+    next();
+  });
 }
 
 function beforeRender(req, res, next) {

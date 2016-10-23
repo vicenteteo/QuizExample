@@ -6,7 +6,7 @@ process.env.DbPassword = 'root';
 function getUser(name, pass, callback) {
   model.User.findOne({
     where: {
-      name: name,
+      name,
       password: pass,
     },
   }).then(callback);
@@ -49,28 +49,30 @@ function getDashboard(callback) {
 
 function getQuestions(callback) {
   model.Quiz.findAll({
-    attributes:['id', ['question','label']],
-  }).then(callback); 
+    attributes: ['id', ['question', 'label']],
+  }).then(callback);
 }
 
 function getQuizStatistics(quizId, callback) {
   model.Quiz.findOne({
     attributes: ['total'],
-    where:{
+    where: {
       id: quizId,
     },
     include: {
       model: model.Answer,
-      attributes: ['total', 'answer'], 
-    }
-  }).then(callback); 
+      attributes: ['total', 'answer'],
+    },
+  }).then(callback);
 }
 
 function getQuiz(userId, isAnonymous, callback) {
-  const where = {userId: userId};
+  const where = {
+    userId,
+  };
 
   if (isAnonymous === false) {
-    where.answers = ''; 
+    where.answers = '';
   }
 
   model.QuizStorage.findAll({
@@ -78,7 +80,7 @@ function getQuiz(userId, isAnonymous, callback) {
       model.Sequelize.fn('RAND'),
     ],
     attributes: ['id', 'QuizId'],
-    where: where,
+    where,
     include: [{
       model: model.Quiz,
       attributes: ['question'],
@@ -168,7 +170,7 @@ function getAnonymousId(callback) {
     attributes: ['id'],
     where: {
       type: 'anonymous',
-      name: 'anonymous', 
+      name: 'anonymous',
     },
   }).then(callback);
 }
@@ -183,5 +185,4 @@ exp.getUsers = getUsers;
 exp.getQuestions = getQuestions;
 exp.getQuizStatistics = getQuizStatistics;
 exp.getAnonymousId = getAnonymousId;
-
 
