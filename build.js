@@ -13,6 +13,7 @@ if (!fs.existsSync(buildDir)) {
 fs.createReadStream('./package.json').pipe(fs.createWriteStream('./build/package.json'));
 fs.createReadStream('./public/index.html').pipe(fs.createWriteStream('./build/public/index.html'));
 fs.createReadStream('./public/components/guest/modalQuiz.css').pipe(fs.createWriteStream('./build/public/components/guest/modalQuiz.css'));
+fs.createReadStream('./public/components/bar-chart/chart.css').pipe(fs.createWriteStream('./build/public/components/bar-chart/chart.css'));
 
 exec('npm install --production', {
   cwd: __dirname + '/build',
