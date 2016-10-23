@@ -7,14 +7,14 @@ const app = express();
 
 function setupSession() {
   app.use(session({
-    key: 'sumome_cookie',
-    secret: 'sumome_secret',
+    key: 'quiz_example_key',
+    secret: 'quiz_example_secret',
     store: new SessionStore({
       host: 'localhost',
       port: 3306,
       user: process.env.DbUser,
       password: process.env.DbPassword,
-      database: 'sumome',
+      database: 'quiz_example',
     }),
     resave: true,
     saveUninitialized: true,
@@ -31,7 +31,6 @@ function startup() {
   app.use('/node_modules', express.static('node_modules'));
   app.use('/common', express.static('common'));
 
-  app.use(services.checkAuthentication);
   app.use(services.resetState);
   app.get('/', services.index);
   app.post('/authenticate', services.authenticate);
@@ -42,6 +41,8 @@ function startup() {
   app.get('/sendquiz', services.sendQuiz);
   app.get('/getdashboard', services.getDashboard);
   app.get('/getusers', services.getUsers);
+  app.get('/getquestions', services.getQuestions);
+  app.get('/getquizstatistics', services.getQuizStatistics);
   app.use(services.beforeRender);
 
   console.log('Listening host: localhost port: 8085');

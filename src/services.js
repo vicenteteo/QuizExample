@@ -40,9 +40,11 @@ function authenticate(req, res, next) {
 
 /* eslint-disable no-param-reassign*/
 function signout(req, res, next) {
-  req.session.userType = 'anonymous';
-  req.session.userId = null;
-  next();
+  dbMngr.getAnonymousId((r) => {
+    req.session.userType = 'anonymous';
+    req.session.userId = r.id;
+    next();
+  });
 }
 
 function createQuiz(req, res, next) {
@@ -50,7 +52,6 @@ function createQuiz(req, res, next) {
   next();
 }
 function sendQuiz(req, res, next) {
-  console.log(JSON.stringify(req.query));
   dbMngr.saveQuizAnswer(req.query);
   next();
 }
@@ -64,7 +65,7 @@ function getDashboard(req, res, next) {
 
 
 function getQuiz(req, res, next) {
-  dbMngr.getQuiz(req.session.userId, (quiz) => {
+  dbMngr.getQuiz(req.session.userId, req.session.userType === 'anonymous', (quiz) => {
     result.data = quiz;
     next();
   });
@@ -75,16 +76,22 @@ function checkUser(req, res, next) {
   next();
 }
 
-function checkQuestions(req, res, next) {
-  next();
+function getQuestions(req, res, next) {
+  dbMngr.getQuestions((questions) => {
+    result.data = questions;
+    next(); 
+  }); 
 }
 
-function checkAuthentication(req, res, next) {
-  next();
+function getQuizStatistics(req, res, next) {
+  dbMngr.getQuizStatistics(req.query.quizId, (r) => {
+    result.data = r;
+    next(); 
+  }); 
 }
 
 function beforeRender(req, res, next) {
-  if (!req.url.match('authenticate|checkuser|signout|createquiz|getquiz|sendquiz|getdashboard|getusers')) {
+  if (!req.url.match('authenticate|checkuser|signout|createquiz|getquiz|sendquiz|getdashboard|getusers|getquestions|getquizstatistics')) {
     next();
     return;
   }
@@ -105,12 +112,13 @@ exp.init = init;
 exp.resetState = resetState;
 exp.beforeRender = beforeRender;
 exp.index = index;
-exp.checkAuthentication = checkAuthentication;
 exp.checkUser = checkUser;
 exp.signout = signout;
 exp.createQuiz = createQuiz;
-exp.checkQuestions = checkQuestions;
 exp.getQuiz = getQuiz;
 exp.sendQuiz = sendQuiz;
 exp.getDashboard = getDashboard;
 exp.getUsers = getUsers;
+exp.getQuestions = getQuestions;
+exp.getQuizStatistics = getQuizStatistics;
+

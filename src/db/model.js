@@ -13,14 +13,14 @@ function initDBModel() {
   let answer = null;
   let quizStorage = null;
 
-  sequelize = new Sequelize('sumome', process.env.DbUser, process.env.DbPassword, {
+  sequelize = new Sequelize('quiz_example', process.env.DbUser, process.env.DbPassword, {
     dialect: 'mysql',
     port: 3306,
     logging: false,
   });
 
   user = sequelize.define('User', {
-    username: Sequelize.STRING,
+    name: Sequelize.STRING,
     password: Sequelize.STRING,
     type: {
       type: Sequelize.STRING,
@@ -37,10 +37,18 @@ function initDBModel() {
 
   quiz = sequelize.define('Quiz', {
     question: Sequelize.STRING,
+    total: {
+      type: Sequelize.INTEGER,
+      defaultValue: 0,
+    },
   });
 
   answer = sequelize.define('Answer', {
     answer: Sequelize.STRING,
+    total: {
+      type: Sequelize.INTEGER,
+      defaultValue: 0,
+    },
   });
 
   answer.belongsTo(quiz);
@@ -55,21 +63,26 @@ function initDBModel() {
   exp.QuizStorage = quizStorage;
 
   sequelize.authenticate().then(() => {
-    sequelize.sync({ force: true }).then(() => {
+    sequelize.sync({ force: false }).then(() => {
       user.create({
-        username: 'guest1',
+        name: 'guest1',
         password: 'guest',
         type: 'registered',
       });
       user.create({
-        username: 'guest2',
+        name: 'guest2',
         password: 'guest',
         type: 'registered',
       });
       user.create({
-        username: 'admin',
+        name: 'admin',
         password: 'admin',
         type: 'admin',
+      });
+      user.create({
+        name: 'anonymous',
+        password: '',
+        type: 'anonymous',
       });
     }, (err) => {
       console.log('Fail to sync database model', err);
@@ -112,7 +125,7 @@ function init(callback) {
       return;
     }
 
-    connection.query('CREATE DATABASE IF NOT EXISTS sumome;', (err2) => {
+    connection.query('CREATE DATABASE IF NOT EXISTS quiz_example;', (err2) => {
       if (err2) {
         exp.err = -1;
         console.error('error connecting: ', err2);

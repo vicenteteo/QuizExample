@@ -1,13 +1,12 @@
 const model = require('./model');
 const exp = module.exports = {};
-
 process.env.DbUser = 'root';
 process.env.DbPassword = 'root';
 
 function getUser(name, pass, callback) {
   model.User.findOne({
     where: {
-      username: name,
+      name: name,
       password: pass,
     },
   }).then(callback);
@@ -16,10 +15,10 @@ function getUser(name, pass, callback) {
 function getUsers(callback) {
   const users = [];
   model.User.findAll({
-    attributes: ['id', 'username'],
+    attributes: ['id', 'name'],
   }).then((u) => {
     for (let i = 0; i < u.length; i++) {
-      if (u[i].username !== 'admin') {
+      if (u[i].name !== 'admin') {
         users.push(u[i]);
       }
     }
@@ -29,7 +28,7 @@ function getUsers(callback) {
 
 function getDashboard(callback) {
   model.User.findAll({
-    attributes: ['id', 'username'],
+    attributes: ['id', 'name'],
     include: [{
       model: model.QuizStorage,
       attributes: ['answers', 'QuizId'],
@@ -48,16 +47,38 @@ function getDashboard(callback) {
   });
 }
 
-function getQuiz(userId, callback) {
+function getQuestions(callback) {
+  model.Quiz.findAll({
+    attributes:['id', ['question','label']],
+  }).then(callback); 
+}
+
+function getQuizStatistics(quizId, callback) {
+  model.Quiz.findOne({
+    attributes: ['total'],
+    where:{
+      id: quizId,
+    },
+    include: {
+      model: model.Answer,
+      attributes: ['total', 'answer'], 
+    }
+  }).then(callback); 
+}
+
+function getQuiz(userId, isAnonymous, callback) {
+  const where = {userId: userId};
+
+  if (isAnonymous === false) {
+    where.answers = ''; 
+  }
+
   model.QuizStorage.findAll({
     order: [
       model.Sequelize.fn('RAND'),
     ],
     attributes: ['id', 'QuizId'],
-    where: {
-      UserId: userId,
-      answers: '',
-    },
+    where: where,
     include: [{
       model: model.Quiz,
       attributes: ['question'],
@@ -111,7 +132,45 @@ function saveQuizAnswer(quiz) {
       where: {
         id: quiz.id,
       },
+    }).then(() => {
+      model.QuizStorage.findOne({
+        attributes: ['QuizId'],
+        where: {
+          id: quiz.id,
+        },
+      }).then((q) => {
+        model.Quiz.findOne({
+          attributes: ['id', 'total'],
+          where: {
+            id: q.QuizId,
+          },
+          include: [{
+            model: model.Answer,
+            attributes: ['id', 'total'],
+          }],
+
+        }).then((totals) => {
+          totals.increment('total');
+          for (let i = 0; i < totals.Answers.length; i++) {
+            for (let ii = 0; ii < quiz.answers.length; ii++) {
+              if (totals.Answers[i].get('id') === parseInt(quiz.answers[ii], 10)) {
+                totals.Answers[i].increment('total');
+              }
+            }
+          }
+        });
+      });
     });
+}
+
+function getAnonymousId(callback) {
+  model.User.findOne({
+    attributes: ['id'],
+    where: {
+      type: 'anonymous',
+      name: 'anonymous', 
+    },
+  }).then(callback);
 }
 
 exp.getUser = getUser;
@@ -121,4 +180,8 @@ exp.getQuiz = getQuiz;
 exp.saveQuizAnswer = saveQuizAnswer;
 exp.getDashboard = getDashboard;
 exp.getUsers = getUsers;
+exp.getQuestions = getQuestions;
+exp.getQuizStatistics = getQuizStatistics;
+exp.getAnonymousId = getAnonymousId;
+
 

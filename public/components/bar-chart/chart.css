@@ -1,3 +1,6 @@
+.bar-chart{
+  text-align: right;
+}
 .bar-chart .chart {
   height: 300px;
   width: 100%;
@@ -16,7 +19,7 @@
 .bar-chart .chart svg .value {
   font-size: 16px;
   font-weight: 300;
-  fill: #333;
+  fill: lime;
 }
 
 .bar-chart .chart svg .label {

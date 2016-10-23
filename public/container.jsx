@@ -5,7 +5,7 @@ class Container extends React.Component {
       userType: 'anonymous',
       pauseQuiz: false,
       showLoggin: false,
-      mnuState: 'quizEditor',
+      mnuState: 'dashboard',
     };
   }
   componentDidMount() {
@@ -70,7 +70,7 @@ class Container extends React.Component {
         <hr />
         <div className='row' id='body'>
           <SignInDialog onClose={() => { this.state.pauseQuiz = false; }} show={this.state.showLoggin} onShow={() => { this.state.showLoggin = false; }} />
-          {this.state.userType !== 'anonymous' ? <ModalQuiz pauseQuiz={this.state.pauseQuiz} /> : ''}
+          <ModalQuiz pauseQuiz={this.state.pauseQuiz} />
         </div>
       </div>);
     }

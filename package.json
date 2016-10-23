@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node startup.js",
     "eslint": "eslint ./**/*.js ./**/*.jsx",
-    "build": "node build.js"
+    "build": "node build.js",
+    "debug": "devtool server.js"
   },
   "babel": {
     "presets": [
@@ -44,6 +45,7 @@
     "jquery": "^1.12.4",
     "mysql": "^2.11.1",
     "react": "^15.3.2",
+    "react-bootstrap-typeahead": "^0.9.4",
     "react-dom": "^15.3.2",
     "sequelize": "^3.24.3",
     "typeahead": "^0.2.2"
