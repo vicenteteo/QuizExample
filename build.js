@@ -8,6 +8,7 @@ if (!fs.existsSync(buildDir)) {
   fs.mkdirSync(buildDir + '/public'); 
   fs.mkdirSync(buildDir + '/public/components'); 
   fs.mkdirSync(buildDir + '/public/components/guest'); 
+  fs.mkdirSync(buildDir + '/public/components/bar-chart'); 
 }
 
 fs.createReadStream('./package.json').pipe(fs.createWriteStream('./build/package.json'));
