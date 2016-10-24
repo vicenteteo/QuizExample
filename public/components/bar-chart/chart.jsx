@@ -41,7 +41,7 @@ class Chart extends React.Component {
       .attr('y', 0)
       .attr('dy', '.35em')
       .text((d) => d[0])
-      .each(() => {
+      .each(function f(){
         labelWidth = Math.ceil(Math.max(labelWidth, this.getBBox().width));
       });
 
@@ -61,7 +61,7 @@ class Chart extends React.Component {
         .attr('dy', '.35em')
         .attr('text-anchor', 'end')
         .text((d) => d[1])
-        .attr('x', (d) => {
+        .attr('x', function f(d){
           const w = this.getBBox().width;
           return Math.max(w + valueMargin, scale(d[1]));
         });
